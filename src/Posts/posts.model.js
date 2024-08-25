@@ -8,7 +8,6 @@ const postSchema = mongoose.Schema({
     datetime: { type: Date, default: () => new Date() },
     body: String,
     updatedDate: Date
-
 })
 
 const modelCreation = mongoose.model("Post", postSchema)
