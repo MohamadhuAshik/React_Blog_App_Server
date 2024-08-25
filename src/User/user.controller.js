@@ -58,6 +58,19 @@ module.exports = {
             console.log(err)
             res.status(500).json({ message: "Internal server error", err: err.message })
         }
+    },
+
+    getUser: async (req, res) => {
+        try {
+            const userFind = await model.findOne({ userMailId: req.mailId })
+            if (!userFind) {
+                return res.status(404).json({ message: "User not Found" })
+            }
+            res.status(200).json({ response_code: 200, user: userFind })
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({ message: "Internal server error" })
+        }
     }
 
 }

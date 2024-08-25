@@ -2,7 +2,24 @@ const express = require("express")
 const model = require("./posts.model")
 const userModel = require("../User/user.model")
 
+
 module.exports = {
+    getPost: async (req, res) => {
+        try {
+            const userFind = await userModel.findOne({ userMailId: req.mailId })
+            if (!userFind) {
+                return res.status(404).json({ message: "User not found" })
+            }
+
+
+            const postFind = await model.find({ user: userFind._id })
+            res.status(200).json({ response_code: 200, posts: postFind })
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({ message: "Internal server error", err: err.message })
+        }
+    },
+
     createPost: async (req, res) => {
         try {
             const { title, body } = req.body
@@ -10,7 +27,6 @@ module.exports = {
                 res.status(400).json({ message: "Required fields are missing" })
             }
             const userCheck = await userModel.findOne({ userMailId: req.mailId })
-            console.log("userCheck", userCheck)
             if (!userCheck) {
                 return res.status(404).json({ message: "Invalid user" })
             }
@@ -62,7 +78,13 @@ module.exports = {
     deletePost: async (req, res) => {
         try {
             const id = req.params
-
+            const result = await model.deleteOne({
+                _id: id.id
+            })
+            if (!result.acknowledged) {
+                res.status(400).json({ message: "Delete Failure" })
+            }
+            res.status(200).json({ response_code: 200, message: "Post Delete Successfully" })
 
         } catch (err) {
             console.log(err)
