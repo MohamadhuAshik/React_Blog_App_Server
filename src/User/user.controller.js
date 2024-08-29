@@ -43,11 +43,11 @@ module.exports = {
             }
             const userCheck = await model.findOne({ userMailId: mailId })
             if (!userCheck) {
-                return res.status(404).json({ message: "MailId Not Found" })
+                return res.status(404).json({ response_code: 404, message: "Wrong Mail Id" })
             }
             const isPasswordMatch = await bcrypt.compare(password, userCheck.userPassword)
             if (!isPasswordMatch) {
-                return res.status(404).json({ message: "Wrong Password" })
+                return res.status(404).json({ response_code: 404, message: "Wrong Password" })
             }
             const userData = {
                 mailId: mailId,
