@@ -20,6 +20,21 @@ module.exports = {
         }
     },
 
+    getPostById: async (req, res) => {
+        try {
+            const { id } = req.params
+
+            const postFind = await model.findOne({ _id: id })
+            if (!postFind) {
+                return res.status(204).json({ response_code: 200, message: "Post Not Found" })
+            }
+            res.status(200).json({ response_code: 200, posts: postFind })
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({ message: "Internal server error", err: err.message })
+        }
+    },
+
     createPost: async (req, res) => {
         try {
             const { title, body } = req.body

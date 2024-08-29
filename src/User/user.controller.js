@@ -53,7 +53,9 @@ module.exports = {
                 mailId: mailId,
             }
             const token = jwt.sign(userData, process.env.JWT_SECRET_KEY)
-            res.status(200).json({ response_code: 200, message: "Login SuccessFully", token: token })
+            res.status(200).json({
+                response_code: 200, message: "Login SuccessFully", token: token, userName: userCheck.userName
+            })
         } catch (err) {
             console.log(err)
             res.status(500).json({ message: "Internal server error", err: err.message })
