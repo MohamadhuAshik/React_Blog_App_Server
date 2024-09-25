@@ -1,8 +1,17 @@
 var admin = require("firebase-admin");
 const model = require("../src/User/user.model")
+// const base64 = require("base-64")
+const dotenv = require("dotenv")
+dotenv.config()
 
 
-var serviceAccount = require("../service_account.json");
+// var serviceAccount = require("../service_account.json");
+var encodedString = process.env.FIREBASE_ENCODED_FILE
+// var serviceAccount = base64.decode(encodedString)
+var serviceAccount = JSON.parse(Buffer.from(encodedString, 'base64').toString('utf-8'));
+// console.log("serviceAccount", serviceAccount)
+
+
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
